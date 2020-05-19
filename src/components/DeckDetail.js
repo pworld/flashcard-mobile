@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default class AddDeck extends React.Component {
+export default class DetailDeck extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>CreateDeck</Text>
+        <Text>Detail Deck</Text>
       </View>
     );
   }

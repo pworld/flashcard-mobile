@@ -14,8 +14,8 @@ import { purple, white } from './src/utils/colors'
 import { setLocalNotification } from './src/utils/helpers'
 
 import AddCard from './src/components/AddCard'
-import AddDeck from './src/components/AddDeck'
-import ListDeck from './src/components/ListDeck'
+import DeckAdd from './src/components/DeckAdd'
+import DeckList from './src/components/DeckList'
 import Quiz from './src/components/Quiz'
 
 const HeadStatusBar = ({backgroundColor, ...props}) => {
@@ -32,7 +32,8 @@ const Stack = createStackNavigator();
 const StackNav = () => {
   return (
   <Stack.Navigator>
-    <Stack.Screen name="List Deck" component={ListDeck} />
+    <Stack.Screen name="List Deck" component={DeckList} />
+    <Stack.Screen name="Detail Deck" component={DeckList} />
     <Stack.Screen name="Add Card" component={AddCard} />
     <Stack.Screen name="Quiz" component={Quiz} />
   </Stack.Navigator>
@@ -72,7 +73,7 @@ const MainNavigator =  () => {
         }}
       >
         <Tab.Screen name="Home" component={StackNav} />
-        <Tab.Screen name="Add Deck" component={AddDeck} />
+        <Tab.Screen name="Add Deck" component={DeckAdd} />
       </Tab.Navigator>
     </NavigationContainer>
   )

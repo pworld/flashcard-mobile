@@ -9,7 +9,8 @@ import {
   
 } from 'react-native';
 
-import { white } from '../utils/colors'
+import { sortTime } from '../utils/helpers';
+import { white } from '../utils/colors';
 
 const DATA = [
   {
@@ -29,30 +30,32 @@ const DATA = [
   },
 ];
 
-class ListDeck extends React.Component {
+class DeckList extends React.Component {
 
   _onPress(item) {
-    this.props.navigation.navigate('Add Card', {
-      itemId: item.id,
-      title: item.deck,
+    console.log(item)
+    this.props.navigation.navigate('Detail Deck', {
+      deck: item
     });
   }
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => this._onPress(item)} style={styles.item}>
-        <Text style={styles.title}>{item.deck}</Text>
-        <Text style={styles.body}>{item.deckTotal} cards</Text>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.body}>{item.cards.length} cards</Text>
       </TouchableOpacity>
     );
   };
   render() {
-    const { decks, navigation } = this.props
+    const { decks } = this.props
+
+    const decksArr = sortTime(Object.values(decks))
 
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={DATA}
-          renderItem={this.renderItem}
+          data={decksArr}
+          renderItem={item => this.renderItem(item)}
           keyExtractor={item => item.id}
         />
     </SafeAreaView>
@@ -68,6 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   item: {
+    width:250,
     backgroundColor: white,
     borderRadius: Platform.OS === 'ios' ? 16 : 2,
     padding: 20,
@@ -101,4 +105,4 @@ function mapStateToProps (decks) {
   }
 }
 
-export default connect(mapStateToProps)(ListDeck)
+export default connect(mapStateToProps)(DeckList)

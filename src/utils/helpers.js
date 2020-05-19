@@ -37,6 +37,11 @@ export function generateUID () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
+export function sortTime (data) {
+  const newSortingArray = data.sort((a,b) => b.timestamp - a.timestamp)
+  return newSortingArray
+}
+
 const styles = StyleSheet.create({
   iconContainer: {
     padding: 5,
