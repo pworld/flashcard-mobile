@@ -1,26 +1,26 @@
-import React from "react";
-import { View, KeyboardAvoidingView } from "react-native";
-import { compose } from "recompose";
-import { Formik } from "formik";
+import React from "react"
+import { View, KeyboardAvoidingView } from "react-native"
+import { compose } from "recompose"
+import { Formik } from "formik"
 import { connect } from 'react-redux'
-import * as Yup from "yup";
-import { Input, Text, Button } from 'react-native-elements';
-import { handleTextInput } from "react-native-formik";
+import * as Yup from "yup"
+import { Input, Text, Button } from 'react-native-elements'
+import { handleTextInput } from "react-native-formik"
 
-import { generateUID } from '../utils/helpers';
-import { addDeck } from '../actions';
+import { generateUID } from '../utils/helpers'
+import { addDeck } from '../actions'
 import styles from './styles'
 
 
 const DeckInput = compose(
   handleTextInput
-)(Input);
+)(Input)
 
 const validationSchema = Yup.object().shape({
     deck: Yup.string()
     .required()
     .min(3, "Minimum 3 characters")
-});
+})
 
 class DeckAdd extends React.Component {
 
@@ -29,7 +29,7 @@ class DeckAdd extends React.Component {
     const id = generateUID()
     const deck = {
       [id] : {
-        id: generateUID(),
+        id: id,
         name:values.deck,
         cards:[],
         timestamp:Date.now()
@@ -38,7 +38,7 @@ class DeckAdd extends React.Component {
 
     this.props.addDeck(deck)
     resetForm({deck: ''})
-    this.props.navigation.navigate('List Deck')
+    this.props.navigation.navigate('DeckList')
   }
 
   render() {
@@ -51,7 +51,7 @@ class DeckAdd extends React.Component {
         onSubmit={(values,{resetForm}) => this.submithandler(values,resetForm)}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
-          <KeyboardAvoidingView style={styles.container} behavior="padding">
+
             <View style={styles.content}>
               <Text style={[styles.title, {marginBottom: 30}]}>What is the title of your deck?</Text>
               <DeckInput 
@@ -69,15 +69,15 @@ class DeckAdd extends React.Component {
                 containerStyle={{width: 150}}
                 buttonStyle={{backgroundColor:'#115cd4'}} />
             </View>
-          </KeyboardAvoidingView>
+
         )}
       </Formik>
-    );
+    )
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   addDeck: (deck) => {dispatch(addDeck(deck))},
-});
+})
 
-export default connect(null, mapDispatchToProps)(DeckAdd);
+export default connect(null, mapDispatchToProps)(DeckAdd)

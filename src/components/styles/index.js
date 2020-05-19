@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     padding: 15
   },
   footer: {
-    padding: 45
+    padding: 30
   },
   title: {
     color: '#141823',
@@ -30,26 +30,14 @@ const styles = StyleSheet.create({
     color: '#999',
     textAlign: 'center'
   },
-  amount: {
+  center: {
     textAlign: 'center'
   },
   cardsLeft: {
     padding: 10,
     textAlign: 'center',
     fontWeight: 'bold'
-  },
-  deckList: {
-    flex: 1,
-    padding: 15,
-    backgroundColor: '#FFF'
-  },
-  deckListItem: {
-    padding: 15,
-    marginBottom: 15,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#d6d7da'
-  },
+  }
 })
 
 export default styles

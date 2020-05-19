@@ -42,14 +42,13 @@ export function sortTime (data) {
   return newSortingArray
 }
 
-const styles = StyleSheet.create({
-  iconContainer: {
-    padding: 5,
-    borderRadius: 8,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 20
-  },
-})
+export function objArr (data) {
+  let obj = {}
+  for (let index = 0; index < data.length; index++) {
+    const singleObj = data[index]
+    if(singleObj){
+      obj[singleObj.id] = singleObj
+    }
+  }
+  return obj
+}

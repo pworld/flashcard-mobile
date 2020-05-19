@@ -1,21 +1,73 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { Text, View } from 'react-native'
+import { Card, Button, Icon } from 'react-native-elements'
+import { connect } from 'react-redux'
+import styles from './styles'
+import { deleteDeck } from '../actions'
 
-export default class DetailDeck extends React.Component {
+class DeckDetail extends React.Component {
+  handleDelete = (deckID) => {
+
+    const { decks, navigation, deleteDeck } = this.props
+
+    deleteDeck(deckID, decks)
+  }
+
   render() {
-    return (
+    const { decks, navigation, route } = this.props
+
+    const deckID = route.params.deckID
+    const deck = decks[deckID]
+
+    if(!deck) navigation.navigate('DeckList')
+
+    return (deck) ? (
       <View style={styles.container}>
-        <Text>Detail Deck</Text>
+        <View style={styles.content}>
+          <Card
+            title={deck.name}
+            image={require('../../public/flashcard.png')}>
+            <Text style={styles.center, {marginBottom: 10}}>
+              {deck.cards.length} Cards
+            </Text>
+            <Button
+              icon={<Icon name='zap' type='octicon' color='#ffffff' />}
+              onPress={() => navigation.navigate('AddCard', { deckID: deckID })}
+              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              title=' Add More Card' />
+          </Card>
+        </View>
+        <View style={styles.footer}>
+            {deck.cards.length > 0 ?
+              <Button
+                icon={<Icon name='play' type='font-awesome' color='#ffffff' />}
+                onPress={() => navigation.navigate('Quiz', { deckID: deckID })}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
+                title='  Start Quiz' />
+              : null
+            }
+
+            <Button
+              icon={<Icon name='remove' type='font-awesome' color='#ffffff' />}
+              onPress={() => {
+                this.handleDelete(deckID)
+              }}
+              buttonStyle={{ backgroundColor:'#cc0000', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              title='  Delete Deck' />
+        </View>
       </View>
-    );
+    ):(null)
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const mapStateToProps = (props) => {
+  return {
+    decks: props
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  deleteDeck: (deckID, decks) => {dispatch(deleteDeck(deckID, decks))},
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckDetail)

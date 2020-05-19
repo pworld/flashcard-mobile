@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -7,36 +7,17 @@ import {
   StyleSheet,
   Text
   
-} from 'react-native';
+} from 'react-native'
 
-import { sortTime } from '../utils/helpers';
-import { white } from '../utils/colors';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    deck: 'First Item',
-    deckTotal: '1',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    deck: 'Second Item',
-    deckTotal: '2',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    deck: 'Third Item',
-    deckTotal: '3',
-  },
-];
+import { sortTime } from '../utils/helpers'
+import { white } from '../utils/colors'
 
 class DeckList extends React.Component {
 
   _onPress(item) {
-    console.log(item)
-    this.props.navigation.navigate('Detail Deck', {
-      deck: item
-    });
+    this.props.navigation.navigate('DeckDetail', {
+      deckID: item.id
+    })
   }
   renderItem = ({ item }) => {
     return (
@@ -44,22 +25,24 @@ class DeckList extends React.Component {
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.body}>{item.cards.length} cards</Text>
       </TouchableOpacity>
-    );
-  };
+    )
+  }
   render() {
     const { decks } = this.props
 
     const decksArr = sortTime(Object.values(decks))
-
     return (
       <SafeAreaView style={styles.container}>
+        {decksArr.length > 0 ? 
         <FlatList
           data={decksArr}
           renderItem={item => this.renderItem(item)}
           keyExtractor={item => item.id}
         />
+        : null
+        }
     </SafeAreaView>
-    );
+    )
   }
 }
 
