@@ -26,7 +26,7 @@ function decks (state = {}, action) {
         ...state,
         [deckID]: {
           ...state[deckID],
-          cards: state[deckID].cards.concat([card])
+          cards: state[deckID].cards.concat(card)
         }
       }
     default :

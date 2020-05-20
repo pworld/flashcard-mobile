@@ -1,78 +1,90 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View } from 'react-native'
+import { Card, Button, Icon } from 'react-native-elements'
 import styles from './styles'
 
 class Quiz extends Component {
-  static navigationOptions = {
-    title: 'Quiz'
-  }
 
   state = {
     current: 0,
-    correctAnswers: 0,
-    showQuestion: true,
-    showResults: false
+    correct: 0,
+    isQuestion: true,
+    isResult: false
   }
 
-  toggleView() {
-    this.setState(previousState => ({ showQuestion: !previousState.showQuestion }))
-  }
-
-  submitAnswer(status) {
+  submitAnswer(status, deckLength) {
     if (status === 'correct') {
-      this.setState((previousState) => ({ correctAnswers: previousState.correctAnswers + 1 }))
+      this.setState((previousState) => ({ correct: previousState.correct + 1 }))
     }
 
-    this.changeQuestion()
-  }
-
-  changeQuestion() {
-    if (this.state.current === this.props.questions.length - 1) {
-      this.setState((previousState) => ({ showResults: true }))
+    if (this.state.current === deckLength.length - 1) {
+      this.setState(previousState => ({ isResult: true }))
     } else {
       this.setState((previousState) => ({ current: previousState.current + 1 }))
     }
   }
 
-  calculatePrecentage() {
-    let value = (this.state.correctAnswers / this.props.questions.length) * 100
+  toggleCard() {
+    this.setState(previousState => ({ isQuestion: !previousState.isQuestion }))
+  }
+
+  restartQuiz() {
+    this.setState({
+      current: 0,
+      correct: 0,
+      isQuestion: true,
+      isResult: false
+    })
+  }
+
+  calculatePrecentage(deckQA) {
+    let value = (this.state.correct / deckQA.length) * 100
     return (
-      parseFloat(value) + "%"
+      parseFloat(value).toFixed(2) + "%"
     )
   }
 
   render() {
-    console.log(this.props.card)
-    let question = this.props.questions[this.state.current].question
-    let answer = this.props.questions[this.state.current].answer
 
-    return (this.state.showResults === false) ? (
+    const { decks, navigation, route } = this.props
+
+    const deckID = route.params.deckID
+    const deckQA = decks[deckID].cards
+
+    return (this.state.isResult === false) ? (
       <View style={styles.container}>
         <View>
-          <Text style={styles.cardsLeft}>{`Card ${this.state.current + 1} of ${this.props.questions.length}`}</Text>
+          <Text style={styles.cardsLeft}>{`Card ${this.state.current + 1} of ${deckQA.length}`}</Text>
         </View>
         <View style={styles.content}>
-          <View style={styles.deck}>
-            <Text style={styles.title}>
-              {this.state.showQuestion ? question : answer}
+          <Card title={this.state.isQuestion ? ' Question ?' : ' Answer'} >
+
+            <Text style={styles.title, {marginBottom: 10}}>
+              {this.state.isQuestion ? deckQA[this.state.current].question : deckQA[this.state.current].answer}
             </Text>
-            <TouchableOpacity onPress={() => this.toggleView()}>
-              <Text style={styles.toggle}>{this.state.showQuestion ? 'Show Answer' : 'Show Question'}</Text>
-            </TouchableOpacity>
-          </View>
+            <Button
+              icon={<Icon name='loop' type='material' color='#ffffff' />}
+              onPress={() => this.toggleCard()}
+              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginTop: 20, marginBottom: 10}}
+              title={this.state.isQuestion ? ' Show Answer' : ' Show Question'} />
+
+          </Card>
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity
-            style={[styles.buttonPlain, {backgroundColor:'#7AC74F', marginBottom: 10}]}
-            onPress={() => this.submitAnswer('correct')}>
-            <Text style={styles.buttonBlackText}>Correct</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.buttonPlain, {backgroundColor:'#DB504A'}]}
-            onPress={() => this.submitAnswer('incorrect')}>
-            <Text style={styles.buttonBlackText}>Incorrect</Text>
-          </TouchableOpacity>
+
+          <Button
+            icon={<Icon name='check' type='material' color='#ffffff' />}
+            onPress={() => {this.submitAnswer('correct', deckQA)}}
+            buttonStyle={{ backgroundColor:'#7AC74F', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
+            title='  Correct' />
+
+          <Button
+            icon={<Icon name='close' type='material' color='#ffffff' />}
+            onPress={() => {this.submitAnswer('incorrect', deckQA)}}
+            buttonStyle={{ backgroundColor:'#cc0000', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='  Incorrect' />
+
         </View>
       </View>
     ) : (
@@ -80,31 +92,30 @@ class Quiz extends Component {
         <View style={styles.content}>
           <View style={styles.deck}>
             <Text style={styles.title}>
-              Your Result is {this.calculatePrecentage()}
+              Your Result is {this.calculatePrecentage(deckQA)}
             </Text>
           </View>
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity
-            style={[styles.button, {marginBottom: 10}]}
-            onPress={() => this.props.navigation.navigate('Quiz', { card: this.props.card })}>
-            <Text style={styles.buttonText}>Restart Quiz</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, {backgroundColor:'#000'}]}
-            onPress={() => this.props.navigation.navigate('Deck', { card: this.props.card })}>
-            <Text style={[styles.buttonText, {color: '#FFF'}]}>Back to Deck</Text>
-          </TouchableOpacity>
+          <Button
+              icon={<Icon name='refresh' type='material' color='#ffffff' />}
+              onPress={() => this.restartQuiz()}
+              buttonStyle={{ backgroundColor:'#7AC74F', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
+              title='  Restart Quiz' />
+          <Button
+              icon={<Icon name='navigate-before' type='material' color='#ffffff' />}
+              onPress={() => navigation.navigate('DeckDetail', { deckID: deckID })}
+              buttonStyle={{ backgroundColor:'#115cd4', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              title='  Back to Deck' />
         </View>
       </View>
     )
   }
 }
 
-const mapStateToProps = (state, props) => {
-  console.log(props)
+const mapStateToProps = (props) => {
   return {
-
+    decks: props
   }
 }
 

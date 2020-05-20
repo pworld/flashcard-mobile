@@ -55,9 +55,7 @@ class DeckDetail extends React.Component {
 
             <Button
               icon={<Icon name='remove' type='font-awesome' color='#ffffff' />}
-              onPress={() => {
-                this.handleDelete(deckID)
-              }}
+              onPress={() => {this.handleDelete(deckID)}}
               buttonStyle={{ backgroundColor:'#cc0000', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='  Delete Deck' />
         </View>

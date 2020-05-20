@@ -24,9 +24,9 @@ const Form = withNextInputAutoFocusForm(View);
 const validationSchema = Yup.object().shape({
     question: Yup.string()
     .required()
-    .min(3, "Minimum 3 characters"),
+    .min(3, "Minimum 3 characters")
+    .max(50, 'Too Long!'),
     answer: Yup.string()
-    .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
 })
