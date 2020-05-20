@@ -10,6 +10,7 @@ import {
   withNextInputAutoFocusInput,
   withNextInputAutoFocusForm } from "react-native-formik"
 
+import { addCardToDeckAPI } from '../utils/api'
 import { addCard } from '../actions'
 import styles from './styles'
 
@@ -37,13 +38,16 @@ class AddCard extends React.Component {
     const { route, navigation, addCard } = this.props
     const deckID = route.params.deckID
 
-    const card = {
+    const card = [{
       question:values.question,
       answer:values.answer,
-    }
+    }]
 
+    addCardToDeckAPI(deckID, card)
     addCard(deckID, card)
+
     resetForm()
+
     navigation.navigate('DeckDetail', {
       deckID: deckID
     })

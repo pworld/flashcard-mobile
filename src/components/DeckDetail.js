@@ -1,16 +1,18 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { Card, Button, Icon } from 'react-native-elements'
+import { Card, Button, Icon, Image } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from './styles'
 import { deleteDeck } from '../actions'
+import { removeDeckAPI } from '../utils/api'
 
 class DeckDetail extends React.Component {
   handleDelete = (deckID) => {
 
-    const { decks, navigation, deleteDeck } = this.props
+    const { decks, deleteDeck } = this.props
 
     deleteDeck(deckID, decks)
+    removeDeckAPI(deckID)
   }
 
   render() {
@@ -26,7 +28,11 @@ class DeckDetail extends React.Component {
         <View style={styles.content}>
           <Card
             title={deck.name}
-            image={require('../../public/flashcard.png')}>
+            >
+            <Image
+              source={require('../../public/flashcard.png')}
+              style={{ width: 150, height: 130 }}
+            />
             <Text style={styles.center, {marginBottom: 10}}>
               {deck.cards.length} Cards
             </Text>

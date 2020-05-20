@@ -79,13 +79,18 @@ const MainNavigator =  () => {
     </NavigationContainer>
   )
 }
-export default function App() {
-  return (
-    <Provider store={createStore(reducer)}>
-      <View style={{flex: 1}}>
-        <HeadStatusBar backgroundColor={purple} barStyle="light-content" />
-        <MainNavigator />
-      </View>
-    </Provider>
-  );
+export default class App extends React.Component {
+  componentDidMount(){
+    setLocalNotification()
+  }
+  render() {
+    return (
+      <Provider store={createStore(reducer)}>
+        <View style={{flex: 1}}>
+          <HeadStatusBar backgroundColor={purple} barStyle="light-content" />
+          <MainNavigator />
+        </View>
+      </Provider>
+    )
+  }
 }

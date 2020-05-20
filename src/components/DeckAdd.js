@@ -10,6 +10,7 @@ import { handleTextInput } from "react-native-formik"
 import { generateUID } from '../utils/helpers'
 import { addDeck } from '../actions'
 import styles from './styles'
+import { saveDeckAPI } from '../utils/api'
 
 
 const DeckInput = compose(
@@ -35,9 +36,11 @@ class DeckAdd extends React.Component {
         timestamp:Date.now()
       }
     }
-
+    saveDeckAPI(id,deck[id])
     this.props.addDeck(deck)
+
     resetForm({deck: ''})
+
     this.props.navigation.navigate('DeckList')
   }
 

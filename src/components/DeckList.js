@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { getDecksAPI } from '../utils/api'
+import { receiveDecks } from '../actions'
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -13,7 +15,10 @@ import { sortTime } from '../utils/helpers'
 import { white } from '../utils/colors'
 
 class DeckList extends React.Component {
-
+  componentDidMount() {
+    getDecksAPI()
+      .then(decks => this.props.dispatch(receiveDecks(decks)))
+  }
   _onPress(item) {
     this.props.navigation.navigate('DeckDetail', {
       deckID: item.id
@@ -87,5 +92,6 @@ function mapStateToProps (decks) {
     decks
   }
 }
+
 
 export default connect(mapStateToProps)(DeckList)
