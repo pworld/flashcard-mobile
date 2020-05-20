@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Text, View } from 'react-native'
 import { Card, Button, Icon } from 'react-native-elements'
 import styles from './styles'
+import { white, green, red, blue } from '../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
 
@@ -18,11 +20,14 @@ class Quiz extends Component {
       this.setState((previousState) => ({ correct: previousState.correct + 1 }))
     }
 
+    clearLocalNotification().then(setLocalNotification)
+
     if (this.state.current === deckLength.length - 1) {
       this.setState(previousState => ({ isResult: true }))
     } else {
       this.setState((previousState) => ({ current: previousState.current + 1 }))
     }
+    this.setState(previousState => ({ isQuestion: true }))
   }
 
   toggleCard() {
@@ -57,34 +62,29 @@ class Quiz extends Component {
         <View>
           <Text style={styles.cardsLeft}>{`Card ${this.state.current + 1} of ${deckQA.length}`}</Text>
         </View>
-        <View style={styles.content}>
+        <View >
           <Card title={this.state.isQuestion ? ' Question ?' : ' Answer'} >
-
             <Text style={styles.title, {marginBottom: 10}}>
               {this.state.isQuestion ? deckQA[this.state.current].question : deckQA[this.state.current].answer}
             </Text>
             <Button
-              icon={<Icon name='loop' type='material' color='#ffffff' />}
+              icon={<Icon name='loop' type='material' color={white} />}
               onPress={() => this.toggleCard()}
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginTop: 20, marginBottom: 10}}
               title={this.state.isQuestion ? ' Show Answer' : ' Show Question'} />
-
           </Card>
         </View>
         <View style={styles.footer}>
-
           <Button
-            icon={<Icon name='check' type='material' color='#ffffff' />}
+            icon={<Icon name='check' type='material' color={white} />}
             onPress={() => {this.submitAnswer('correct', deckQA)}}
-            buttonStyle={{ backgroundColor:'#7AC74F', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
+            buttonStyle={{ backgroundColor:green, borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
             title='  Correct' />
-
           <Button
-            icon={<Icon name='close' type='material' color='#ffffff' />}
+            icon={<Icon name='close' type='material' color={white} />}
             onPress={() => {this.submitAnswer('incorrect', deckQA)}}
-            buttonStyle={{ backgroundColor:'#cc0000', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            buttonStyle={{ backgroundColor:red, borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
             title='  Incorrect' />
-
         </View>
       </View>
     ) : (
@@ -98,14 +98,14 @@ class Quiz extends Component {
         </View>
         <View style={styles.footer}>
           <Button
-              icon={<Icon name='refresh' type='material' color='#ffffff' />}
+              icon={<Icon name='refresh' type='material' color={white} />}
               onPress={() => this.restartQuiz()}
-              buttonStyle={{ backgroundColor:'#7AC74F', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
+              buttonStyle={{ backgroundColor:green, borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
               title='  Restart Quiz' />
           <Button
-              icon={<Icon name='navigate-before' type='material' color='#ffffff' />}
+              icon={<Icon name='navigate-before' type='material' color={white} />}
               onPress={() => navigation.navigate('DeckDetail', { deckID: deckID })}
-              buttonStyle={{ backgroundColor:'#115cd4', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              buttonStyle={{ backgroundColor:blue, borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='  Back to Deck' />
         </View>
       </View>

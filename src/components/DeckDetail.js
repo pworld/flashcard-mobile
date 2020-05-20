@@ -1,12 +1,17 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Animated } from 'react-native'
 import { Card, Button, Icon, Image } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from './styles'
 import { deleteDeck } from '../actions'
 import { removeDeckAPI } from '../utils/api'
+import { white, red, green } from '../utils/colors'
 
 class DeckDetail extends React.Component {
+  state = {
+    opacity: new Animated.Value(0)
+  }
+
   handleDelete = (deckID) => {
 
     const { decks, deleteDeck } = this.props
@@ -37,26 +42,25 @@ class DeckDetail extends React.Component {
               {deck.cards.length} Cards
             </Text>
             <Button
-              icon={<Icon name='zap' type='octicon' color='#ffffff' />}
+              icon={<Icon name='zap' type='octicon' color={white} />}
               onPress={() => navigation.navigate('AddCard', { deckID: deckID })}
-              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              buttonStyle={{backgroundColor:green, borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title=' Add More Card' />
           </Card>
         </View>
         <View style={styles.footer}>
             {deck.cards.length > 0 ?
               <Button
-                icon={<Icon name='play' type='font-awesome' color='#ffffff' />}
+                icon={<Icon name='play' type='font-awesome' color={white} />}
                 onPress={() => navigation.navigate('Quiz', { deckID: deckID })}
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
                 title='  Start Quiz' />
               : null
             }
-
             <Button
-              icon={<Icon name='remove' type='font-awesome' color='#ffffff' />}
+              icon={<Icon name='remove' type='font-awesome' color={white} />}
               onPress={() => {this.handleDelete(deckID)}}
-              buttonStyle={{ backgroundColor:'#cc0000', borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              buttonStyle={{ backgroundColor:red, borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               title='  Delete Deck' />
         </View>
       </View>

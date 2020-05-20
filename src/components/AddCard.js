@@ -11,6 +11,7 @@ import {
   withNextInputAutoFocusForm } from "react-native-formik"
 
 import { addCardToDeckAPI } from '../utils/api'
+import { blue } from '../utils/colors'
 import { addCard } from '../actions'
 import styles from './styles'
 
@@ -90,7 +91,7 @@ class AddCard extends React.Component {
                 icon={{name: 'sc-telegram', type: 'evilicon' }} 
                 title="Submit" 
                 containerStyle={{width: 150}}
-                buttonStyle={{backgroundColor:'#115cd4'}} />
+                buttonStyle={{backgroundColor:blue}} />
             </Form>
 
         )}

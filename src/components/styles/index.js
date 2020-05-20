@@ -25,11 +25,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666'
   },
-  toggle: {
-    padding: 5,
-    color: '#999',
-    textAlign: 'center'
-  },
   center: {
     textAlign: 'center'
   },

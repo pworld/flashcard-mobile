@@ -8,9 +8,10 @@ import { Input, Text, Button } from 'react-native-elements'
 import { handleTextInput } from "react-native-formik"
 
 import { generateUID } from '../utils/helpers'
+import { blue } from '../utils/colors'
+import { saveDeckAPI } from '../utils/api'
 import { addDeck } from '../actions'
 import styles from './styles'
-import { saveDeckAPI } from '../utils/api'
 
 
 const DeckInput = compose(
@@ -41,7 +42,9 @@ class DeckAdd extends React.Component {
 
     resetForm({deck: ''})
 
-    this.props.navigation.navigate('DeckList')
+    this.props.navigation.navigate('DeckDetail', {
+      deckID: id
+    })
   }
 
   render() {
@@ -70,7 +73,7 @@ class DeckAdd extends React.Component {
                 icon={{name: 'sc-telegram', type: 'evilicon' }} 
                 title="Submit" 
                 containerStyle={{width: 150}}
-                buttonStyle={{backgroundColor:'#115cd4'}} />
+                buttonStyle={{backgroundColor:blue}} />
             </View>
 
         )}
