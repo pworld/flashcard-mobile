@@ -37,14 +37,13 @@ Like `yarn start`, but also attempts to open your app on a connected Android dev
 
 ## File Structure
 
-├── public                  # Assets Publics
-├── src                     # Source files
-    ├── actions             # Actions Logic
-    ├── components          # React Components
-    ├── reducers            # Redux Reducers
-    ├── utils               # Utility Helpers, API
-
-└── README.md
+├.. public                  # Assets Publics
+├.. src                     # Source files
+├.... actions             # Actions Logic
+├.... components          # React Components
+├.... reducers            # Redux Reducers
+├.... utils               # Utility Helpers, API
+└.... README.md
 
 
 ## Plugin Used
